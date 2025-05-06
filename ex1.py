@@ -31,9 +31,9 @@ def parse_args():
                         help="Number of samples to be used during validation or -1 if all validation samples should be used")
     parser.add_argument("--max_predict_samples", type=int, default=-1,
                         help="Number of samples to be used during prediction or -1 if all prediction samples should be used")
-    parser.add_argument("--num_train_epochs", type=int, default=3,
+    parser.add_argument("--num_train_epochs", type=int, default=2,
                         help="Number of training epochs")
-    parser.add_argument("--lr", type=float, default=2e-5,
+    parser.add_argument("--lr", type=float, default=3e-05,
                         help="Learning rate")
     parser.add_argument("--batch_size", type=int, default=16,
                         help="Train batch size")
@@ -116,7 +116,7 @@ def train_model(args, tokenized_datasets, tokenizer):
     
     # Define training arguments
     training_args = TrainingArguments(
-        output_dir="./results",
+        output_dir="./models",
         num_train_epochs=args.num_train_epochs,
         per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.batch_size,
@@ -163,10 +163,10 @@ def train_model(args, tokenized_datasets, tokenizer):
     model.save_pretrained(model_path)
     tokenizer.save_pretrained(model_path)
     
-    # Log results to res.txt
-    with open("res.txt", "a") as f:
-        f.write(f"epoch_num: {args.num_train_epochs}, lr: {args.lr}, batch_size: {args.batch_size}, eval_acc: {validation_accuracy:.4f}\n")
-        wandb.finish()
+    # # Log the results to res.txt
+    # with open("res.txt", "a") as f:
+    #     f.write(f"epoch_num: {args.num_train_epochs}, lr: {args.lr}, batch_size: {args.batch_size}, eval_acc: {validation_accuracy:.4f}\n")
+    #     wandb.finish()
     
     return model_path, validation_accuracy
 
